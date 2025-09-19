@@ -292,6 +292,12 @@
             color: #27ae60;
             margin: 0 0 10px 0;
         }
+        .segment-content {
+            display: none;
+        }
+        .segment-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -304,6 +310,7 @@
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showTab(event, 'performance')">表現分析</button>
             <button class="nav-tab" onclick="showTab(event, 'critical')">Critical 分段</button>
+            <button class="nav-tab" onclick="showTab(event, 'segments')">分段詳細分析</button>
             <button class="nav-tab" onclick="showTab(event, 'comparison')">性別比較</button>
             <button class="nav-tab" onclick="showTab(event, 'insights')">洞察建議</button>
         </div>
@@ -644,6 +651,362 @@
             </div>
         </div>
 
+        <!-- 分段詳細分析 Tab -->
+        <div id="segments" class="tab-content">
+            <div class="summary-box">
+                <h3>🎯 三項運動分段深度分析</h3>
+                <p><strong>游泳：</strong>技術主導，配速極度穩定（±0.1秒）</p>
+                <p><strong>騎車：</strong>週期性變化，45km和135km為降速關鍵點</p>
+                <p><strong>跑步：</strong>26.5km撞牆效應，42.2km終點衝刺配速下降549秒/km</p>
+            </div>
+
+            <div class="nav-tabs" style="margin-bottom: 20px;">
+                <button class="nav-tab active" onclick="showSegmentTab(event, 'swim-segments')">🏊‍♂️ 游泳分段</button>
+                <button class="nav-tab" onclick="showSegmentTab(event, 'bike-segments')">🚴‍♂️ 騎車分段</button>
+                <button class="nav-tab" onclick="showSegmentTab(event, 'run-segments')">🏃‍♂️ 跑步分段</button>
+                <button class="nav-tab" onclick="showSegmentTab(event, 'segment-overview')">📊 分段總覽</button>
+            </div>
+
+            <!-- 游泳分段分析 -->
+            <div id="swim-segments" class="segment-content active">
+                <h2>🏊‍♂️ 游泳分段配速分析</h2>
+
+                <div class="warning-box">
+                    <h3>📊 游泳關鍵發現</h3>
+                    <p><strong>游泳階段配速相當穩定：</strong>分析722位完賽選手的數據發現，游泳各分段之間的配速變化極小，平均變化幅度在±0.1秒以內。</p>
+                    <p><strong>技術要求：</strong>游泳是三項運動中技術要求最高的項目，多數選手能夠維持穩定的節奏完成全程3.8公里。</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>分析數據統計</h4>
+                        <div class="stat-row">
+                            <span class="stat-label">分析選手數:</span>
+                            <span class="stat-value">722人</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">平均配速變化:</span>
+                            <span class="stat-value">±0.1秒</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">分段檢查點:</span>
+                            <span class="stat-value">3個</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">游泳總距離:</span>
+                            <span class="stat-value">3.8km</span>
+                        </div>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>分段檢查點</th>
+                            <th>平均配速變化</th>
+                            <th>中位數變化</th>
+                            <th>標準差</th>
+                            <th>分析選手數</th>
+                            <th>特點說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Swim 1.9k</td>
+                            <td>-0.0秒</td>
+                            <td>-0.0秒</td>
+                            <td>0.1秒</td>
+                            <td>722</td>
+                            <td>中段維持穩定</td>
+                        </tr>
+                        <tr>
+                            <td>Swim 2.85k</td>
+                            <td>-0.0秒</td>
+                            <td>-0.0秒</td>
+                            <td>0.0秒</td>
+                            <td>720</td>
+                            <td>後段極度穩定</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="chart-container">
+                    <canvas id="swimSegmentChart" width="400" height="300"></canvas>
+                </div>
+
+                <div class="insight-box">
+                    <h4>🏊‍♂️ 游泳訓練建議</h4>
+                    <p><strong>技術優先：</strong>游泳配速穩定說明技術比體能更重要</p>
+                    <p><strong>節奏控制：</strong>建議平時練習維持穩定的划手節奏</p>
+                    <p><strong>開放水域：</strong>多練習開放水域游泳，適應比賽環境</p>
+                    <p><strong>體位練習：</strong>良好的體位可以減少阻力，提高效率</p>
+                </div>
+            </div>
+
+            <!-- 騎車分段分析 -->
+            <div id="bike-segments" class="segment-content">
+                <h2>🚴‍♂️ 騎車分段速度分析</h2>
+
+                <div class="warning-box">
+                    <h3>🚨 騎車關鍵發現</h3>
+                    <p><strong>明顯的速度波動：</strong>與游泳的穩定配速不同，騎車階段出現明顯的速度變化模式。</p>
+                    <p><strong>45公里降速點：</strong>在Bike 45k處出現顯著降速(-1.1 km/h)，可能是地形或風向因素。</p>
+                    <p><strong>70公里回升：</strong>Bike 70k處速度明顯回升(+1.6 km/h)，是騎車階段的最大加速點。</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>分析數據統計</h4>
+                        <div class="stat-row">
+                            <span class="stat-label">分析選手數:</span>
+                            <span class="stat-value">722人</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">最大降速:</span>
+                            <span class="stat-value">-1.1 km/h</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">最大加速:</span>
+                            <span class="stat-value">+1.6 km/h</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">騎車總距離:</span>
+                            <span class="stat-value">180km</span>
+                        </div>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>分段檢查點</th>
+                            <th>平均速度變化</th>
+                            <th>中位數變化</th>
+                            <th>標準差</th>
+                            <th>分析選手數</th>
+                            <th>特點說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color: #fadbd8;">
+                            <td><strong>Bike 45k</strong></td>
+                            <td><strong>-1.1 km/h</strong></td>
+                            <td>-1.1 km/h</td>
+                            <td>1.1 km/h</td>
+                            <td>721</td>
+                            <td>🔽 最大降速點</td>
+                        </tr>
+                        <tr style="background-color: #e8f5e8;">
+                            <td><strong>Bike 70k</strong></td>
+                            <td><strong>+1.6 km/h</strong></td>
+                            <td>+1.6 km/h</td>
+                            <td>0.6 km/h</td>
+                            <td>719</td>
+                            <td>🔼 最大加速點</td>
+                        </tr>
+                        <tr>
+                            <td>Bike 90k</td>
+                            <td>+0.7 km/h</td>
+                            <td>+0.8 km/h</td>
+                            <td>0.4 km/h</td>
+                            <td>717</td>
+                            <td>持續加速</td>
+                        </tr>
+                        <tr>
+                            <td>Bike 135k</td>
+                            <td>-1.1 km/h</td>
+                            <td>-1.1 km/h</td>
+                            <td>0.4 km/h</td>
+                            <td>700</td>
+                            <td>中後段疲勞</td>
+                        </tr>
+                        <tr>
+                            <td>Bike 160k</td>
+                            <td>+0.5 km/h</td>
+                            <td>+0.5 km/h</td>
+                            <td>0.2 km/h</td>
+                            <td>680</td>
+                            <td>準備轉換</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="chart-container">
+                    <canvas id="bikeSegmentChart" width="400" height="300"></canvas>
+                </div>
+
+                <div class="insight-box">
+                    <h4>🚴‍♂️ 騎車訓練建議</h4>
+                    <p><strong>45公里重點：</strong>針對45公里左右的體能下降進行專項訓練</p>
+                    <p><strong>地形適應：</strong>練習不同地形的騎行，適應速度變化</p>
+                    <p><strong>配速策略：</strong>避免前段過快，保留體力應對後段</p>
+                    <p><strong>營養補給：</strong>在降速點前後注意能量補充</p>
+                </div>
+            </div>
+
+            <!-- 跑步分段分析 -->
+            <div id="run-segments" class="segment-content">
+                <h2>🏃‍♂️ 跑步分段配速分析</h2>
+
+                <div class="warning-box">
+                    <h3>🚨 跑步關鍵發現</h3>
+                    <p><strong>26.5公里撞牆：</strong>平均配速下降+58秒/公里，是最嚴重的配速下降點。</p>
+                    <p><strong>42.2公里終點衝刺：</strong>所有選手平均配速下降+549秒/公里，體能已接近極限。</p>
+                    <p><strong>漸進式疲勞：</strong>從30公里開始，每個檢查點的配速都持續下降。</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>分析數據統計</h4>
+                        <div class="stat-row">
+                            <span class="stat-label">分析選手數:</span>
+                            <span class="stat-value">750+人</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">撞牆點:</span>
+                            <span class="stat-value">26.5km</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">撞牆配速下降:</span>
+                            <span class="stat-value">+58秒</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">馬拉松距離:</span>
+                            <span class="stat-value">42.2km</span>
+                        </div>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>分段檢查點</th>
+                            <th>平均配速變化</th>
+                            <th>累積選手數</th>
+                            <th>特點說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Run 5k</td>
+                            <td>+8秒/km</td>
+                            <td>774</td>
+                            <td>轉換適應期</td>
+                        </tr>
+                        <tr>
+                            <td>Run 10k</td>
+                            <td>+5秒/km</td>
+                            <td>773</td>
+                            <td>節奏調整</td>
+                        </tr>
+                        <tr>
+                            <td>Run 21k</td>
+                            <td>+12秒/km</td>
+                            <td>770</td>
+                            <td>半程疲勞</td>
+                        </tr>
+                        <tr style="background-color: #fadbd8;">
+                            <td><strong>Run 26.5k</strong></td>
+                            <td><strong>+58秒/km</strong></td>
+                            <td>768</td>
+                            <td><strong>🔽 撞牆期</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Run 30k</td>
+                            <td>+23秒/km</td>
+                            <td>766</td>
+                            <td>持續疲勞</td>
+                        </tr>
+                        <tr>
+                            <td>Run 35k</td>
+                            <td>+31秒/km</td>
+                            <td>760</td>
+                            <td>後段衰退</td>
+                        </tr>
+                        <tr style="background-color: #fadbd8;">
+                            <td><strong>Run 42.2k</strong></td>
+                            <td><strong>+549秒/km</strong></td>
+                            <td>749</td>
+                            <td><strong>🏁 終點衝刺</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="chart-container">
+                    <canvas id="runSegmentChart" width="400" height="300"></canvas>
+                </div>
+
+                <div class="insight-box">
+                    <h4>🏃‍♂️ 跑步訓練建議</h4>
+                    <p><strong>26.5公里重點：</strong>針對撞牆期進行長距離耐力訓練</p>
+                    <p><strong>營養策略：</strong>在20-25公里之間加強能量補充</p>
+                    <p><strong>配速控制：</strong>前半段保守配速，為後段保留體力</p>
+                    <p><strong>心理準備：</strong>做好應對撞牆期的心理建設</p>
+                </div>
+            </div>
+
+            <!-- 分段總覽 -->
+            <div id="segment-overview" class="segment-content">
+                <h2>📊 三項運動分段總覽比較</h2>
+
+                <div class="summary-box">
+                    <h3>🎯 綜合分析結論</h3>
+                    <p><strong>項目特性差異：</strong>三個項目展現完全不同的體能需求和挑戰特點。</p>
+                    <p><strong>策略重點：</strong>游泳重技術、騎車重策略、跑步重耐力。</p>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>項目</th>
+                            <th>主要特徵</th>
+                            <th>最大挑戰</th>
+                            <th>訓練重點</th>
+                            <th>配速穩定性</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🏊‍♂️ 游泳</td>
+                            <td>極度穩定</td>
+                            <td>技術要求</td>
+                            <td>技術練習</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>🚴‍♂️ 騎車</td>
+                            <td>週期性變化</td>
+                            <td>45km降速點</td>
+                            <td>地形適應</td>
+                            <td>⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>🏃‍♂️ 跑步</td>
+                            <td>漸進式衰退</td>
+                            <td>26.5km撞牆</td>
+                            <td>耐力建構</td>
+                            <td>⭐⭐</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="chart-container">
+                    <canvas id="segmentOverviewChart" width="400" height="300"></canvas>
+                </div>
+
+                <div class="warning-box">
+                    <h3>🏆 整體競賽策略建議</h3>
+                    <p><strong>游泳階段：</strong>專注技術，維持穩定節奏，避免過度消耗體力</p>
+                    <p><strong>轉換T1：</strong>快速高效，為騎車階段做好準備</p>
+                    <p><strong>騎車前段：</strong>謹慎通過45公里降速區，注意配速控制</p>
+                    <p><strong>騎車後段：</strong>把握70公里加速機會，但要為跑步保留體力</p>
+                    <p><strong>轉換T2：</strong>調整心率，準備迎接跑步挑戰</p>
+                    <p><strong>跑步前半：</strong>保守配速，為26.5公里撞牆期做好準備</p>
+                    <p><strong>跑步後半：</strong>心理堅持，適度調整配速，完成挑戰</p>
+                </div>
+            </div>
+        </div>
+
         <!-- 性別比較 Tab -->
         <div id="comparison" class="tab-content">
             <div class="summary-box">
@@ -799,6 +1162,21 @@
             tablinks = document.getElementsByClassName("nav-tab");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Segment tab functionality
+        function showSegmentTab(evt, tabName) {
+            var i, segmentcontent, segmenttabs;
+            segmentcontent = document.getElementsByClassName("segment-content");
+            for (i = 0; i < segmentcontent.length; i++) {
+                segmentcontent[i].classList.remove("active");
+            }
+            segmenttabs = evt.currentTarget.parentElement.getElementsByClassName("nav-tab");
+            for (i = 0; i < segmenttabs.length; i++) {
+                segmenttabs[i].classList.remove("active");
             }
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
@@ -1052,6 +1430,167 @@
                         title: {
                             display: true,
                             text: '改善潛力'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Swimming Segment Chart
+        const swimSegmentCtx = document.getElementById('swimSegmentChart').getContext('2d');
+        new Chart(swimSegmentCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Swim 1.9k', 'Swim 2.85k'],
+                datasets: [{
+                    label: '配速變化 (秒)',
+                    data: [-0.0, -0.0],
+                    backgroundColor: ['#3498db', '#2980b9'],
+                    borderColor: ['#2980b9', '#1f6391'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '游泳分段配速變化',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '配速變化 (秒/100m)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bike Segment Chart
+        const bikeSegmentCtx = document.getElementById('bikeSegmentChart').getContext('2d');
+        new Chart(bikeSegmentCtx, {
+            type: 'line',
+            data: {
+                labels: ['Bike 45k', 'Bike 70k', 'Bike 90k', 'Bike 135k', 'Bike 160k'],
+                datasets: [{
+                    label: '速度變化 (km/h)',
+                    data: [-1.1, 1.6, 0.7, -1.1, 0.5],
+                    backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                    borderColor: '#e74c3c',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '騎車分段速度變化',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '速度變化 (km/h)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Run Segment Chart
+        const runSegmentCtx = document.getElementById('runSegmentChart').getContext('2d');
+        new Chart(runSegmentCtx, {
+            type: 'bar',
+            data: {
+                labels: ['5k', '10k', '21k', '26.5k', '30k', '35k', '42.2k'],
+                datasets: [{
+                    label: '配速下降 (秒/km)',
+                    data: [8, 5, 12, 58, 23, 31, 549],
+                    backgroundColor: [
+                        '#f39c12', '#f39c12', '#e67e22', '#e74c3c',
+                        '#e67e22', '#e67e22', '#c0392b'
+                    ],
+                    borderColor: '#d35400',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '跑步分段配速下降',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '配速下降 (秒/km)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Segment Overview Chart
+        const segmentOverviewCtx = document.getElementById('segmentOverviewChart').getContext('2d');
+        new Chart(segmentOverviewCtx, {
+            type: 'radar',
+            data: {
+                labels: ['配速穩定性', '技術要求', '體能需求', '策略重要性', '心理挑戰'],
+                datasets: [
+                    {
+                        label: '游泳',
+                        data: [5, 5, 3, 2, 2],
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: '#3498db',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '騎車',
+                        data: [3, 3, 4, 5, 3],
+                        backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                        borderColor: '#e74c3c',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '跑步',
+                        data: [2, 2, 5, 4, 5],
+                        backgroundColor: 'rgba(243, 156, 18, 0.2)',
+                        borderColor: '#f39c12',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '三項運動特性雷達圖',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 5,
+                        pointLabels: {
+                            font: { size: 12 }
                         }
                     }
                 }
