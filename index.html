@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Male 40-49 Age Groups Performance Analysis - Challenge Taiwan 2025</title>
+    <title>Comprehensive Triathlon Analysis - Challenge Taiwan 2025</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -14,7 +14,7 @@
             color: #333;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -35,6 +35,43 @@
             border-left: 4px solid #3498db;
             padding-left: 15px;
         }
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        .nav-tabs {
+            display: flex;
+            background: #ecf0f1;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            background: #ecf0f1;
+            color: #7f8c8d;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-tab.active {
+            background: #3498db;
+            color: white;
+        }
+        .nav-tab:hover:not(.active) {
+            background: #bdc3c7;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -47,7 +84,7 @@
             border-radius: 8px;
             border-left: 4px solid #3498db;
         }
-        .stat-card h3 {
+        .stat-card h4 {
             margin: 0 0 15px 0;
             color: #2c3e50;
             font-size: 18px;
@@ -66,51 +103,6 @@
         .stat-value {
             font-weight: bold;
             color: #2c3e50;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        th {
-            background: #3498db;
-            color: white;
-            font-weight: 600;
-        }
-        tr:hover {
-            background-color: #f8f9fa;
-        }
-        .chart-container {
-            margin: 30px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .chart-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin: 20px 0;
-        }
-        .chart-box {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .chart-box h3 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 20px;
         }
         .summary-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -142,9 +134,128 @@
             font-size: 14px;
             opacity: 0.9;
         }
-        .emoji {
+        .warning-box {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .warning-box h3 {
+            margin: 0 0 15px 0;
             font-size: 24px;
-            margin-right: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin: 20px 0;
+        }
+        .chart-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .chart-box h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .level-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .level-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .level-card.elite {
+            border-top: 4px solid #f1c40f;
+        }
+        .level-card.excellent {
+            border-top: 4px solid #27ae60;
+        }
+        .level-card.main {
+            border-top: 4px solid #3498db;
+        }
+        .level-header {
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        .level-header.elite {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        }
+        .level-header.excellent {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+        .level-header.main {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        .level-content {
+            padding: 20px;
+        }
+        .critical-rank {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .rank-number {
+            background: #e74c3c;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .segment-name {
+            flex: 1;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        .change-value {
+            color: #e74c3c;
+            font-weight: bold;
         }
         .performance-level {
             display: inline-block;
@@ -158,276 +269,541 @@
         .excellent { background: #27ae60; color: white; }
         .good { background: #3498db; color: white; }
         .needs-improvement { background: #e74c3c; color: white; }
+        .danger-level {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .extreme { background: #e74c3c; color: white; }
+        .high { background: #f39c12; color: white; }
+        .medium { background: #f1c40f; color: #2c3e50; }
+        .low { background: #27ae60; color: white; }
+        .insight-box {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #27ae60;
+        }
+        .insight-box h4 {
+            color: #27ae60;
+            margin: 0 0 10px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏊‍♂️🚴‍♂️🏃‍♂️ Male 40-49 Age Groups Performance Analysis</h1>
+        <h1>🏊‍♂️🚴‍♂️🏃‍♂️ Comprehensive Triathlon Analysis</h1>
         <p style="text-align: center; font-size: 18px; color: #7f8c8d; margin-bottom: 30px;">
-            Challenge Taiwan 2025 - 226km Ironman Triathlon
+            Challenge Taiwan 2025 - 綜合鐵人三項數據分析
         </p>
 
-        <div class="summary-box">
-            <h3>📊 總體概況</h3>
-            <div class="summary-stats">
-                <div class="summary-stat">
-                    <span class="number">326</span>
-                    <span class="label">總參賽選手</span>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab(event, 'performance')">表現分析</button>
+            <button class="nav-tab" onclick="showTab(event, 'critical')">Critical 分段</button>
+            <button class="nav-tab" onclick="showTab(event, 'comparison')">性別比較</button>
+            <button class="nav-tab" onclick="showTab(event, 'insights')">洞察建議</button>
+        </div>
+
+        <!-- 表現分析 Tab -->
+        <div id="performance" class="tab-content active">
+            <div class="summary-box">
+                <h3>📊 Male 40-49 Age Groups 總體概況</h3>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <span class="number">326</span>
+                        <span class="label">總參賽選手</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span class="number">157</span>
+                        <span class="label">40-44歲組</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span class="number">169</span>
+                        <span class="label">45-49歲組</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span class="number">226km</span>
+                        <span class="label">比賽距離</span>
+                    </div>
                 </div>
-                <div class="summary-stat">
-                    <span class="number">157</span>
-                    <span class="label">40-44歲組</span>
+            </div>
+
+            <h2>🏊‍♂️ 游泳配速分析 (每100公尺)</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>配速統計</h4>
+                    <div class="stat-row">
+                        <span class="stat-label">平均配速:</span>
+                        <span class="stat-value">02:47/100m</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">中位數:</span>
+                        <span class="stat-value">02:42/100m</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">最佳配速:</span>
+                        <span class="stat-value">01:45/100m <span class="performance-level elite">菁英</span></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">最慢配速:</span>
+                        <span class="stat-value">05:12/100m</span>
+                    </div>
                 </div>
-                <div class="summary-stat">
-                    <span class="number">169</span>
-                    <span class="label">45-49歲組</span>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>配速範圍 (每100m)</th>
+                        <th>人數</th>
+                        <th>百分比</th>
+                        <th>水準</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1:30-2:00</td>
+                        <td>10</td>
+                        <td>3.1%</td>
+                        <td><span class="performance-level elite">菁英級</span></td>
+                    </tr>
+                    <tr>
+                        <td>2:00-2:30</td>
+                        <td>71</td>
+                        <td>21.8%</td>
+                        <td><span class="performance-level excellent">優秀</span></td>
+                    </tr>
+                    <tr style="background-color: #e8f5e8;">
+                        <td><strong>2:30-3:00</strong></td>
+                        <td><strong>133</strong></td>
+                        <td><strong>40.8%</strong></td>
+                        <td><span class="performance-level good">主要族群</span></td>
+                    </tr>
+                    <tr>
+                        <td>>3:00</td>
+                        <td>93</td>
+                        <td>28.5%</td>
+                        <td><span class="performance-level needs-improvement">需要改善</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>🚴‍♂️ 騎車速度分析 (公里/小時)</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>速度統計</h4>
+                    <div class="stat-row">
+                        <span class="stat-label">平均速度:</span>
+                        <span class="stat-value">26.6 km/hr</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">中位數:</span>
+                        <span class="stat-value">26.4 km/hr</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">最快速度:</span>
+                        <span class="stat-value">40.8 km/hr <span class="performance-level elite">頂尖</span></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">最慢速度:</span>
+                        <span class="stat-value">20.7 km/hr</span>
+                    </div>
                 </div>
-                <div class="summary-stat">
-                    <span class="number">226km</span>
-                    <span class="label">比賽距離</span>
+            </div>
+
+            <h2>🏃‍♂️ 跑步配速分析 (每公里)</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>配速統計</h4>
+                    <div class="stat-row">
+                        <span class="stat-label">平均配速:</span>
+                        <span class="stat-value">8'04"/km</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">中位數:</span>
+                        <span class="stat-value">8'09"/km</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">最佳配速:</span>
+                        <span class="stat-value">5'34"/km <span class="performance-level excellent">優秀</span></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">最慢配速:</span>
+                        <span class="stat-value">10'34"/km</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <h3>游泳配速分布</h3>
+                    <canvas id="swimChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>騎車速度分布</h3>
+                    <canvas id="bikeChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <h3>跑步配速分布</h3>
+                    <canvas id="runChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>三項目表現綜合比較</h3>
+                    <canvas id="overallChart" width="400" height="300"></canvas>
                 </div>
             </div>
         </div>
 
-        <h2>🏊‍♂️ 游泳配速分析 (每100公尺)</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>配速統計</h3>
-                <div class="stat-row">
-                    <span class="stat-label">平均配速:</span>
-                    <span class="stat-value">02:47/100m</span>
+        <!-- Critical 分段 Tab -->
+        <div id="critical" class="tab-content">
+            <div class="warning-box">
+                <h3>⚠️ 最危險的分段點</h3>
+                <p><strong>T2 → Run 3k</strong> 是所有級別選手的最大考驗</p>
+                <p>平均排名變動超過 <strong>100名</strong>，超過200人會大崩潰！</p>
+            </div>
+
+            <h2>📊 整體 Critical 分段排行榜</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>分段</th>
+                        <th>平均變動</th>
+                        <th>最大變動</th>
+                        <th>大崩潰人數</th>
+                        <th>危險等級</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>T2 → Run 3k</strong></td>
+                        <td>129.2名</td>
+                        <td>490名</td>
+                        <td>237人</td>
+                        <td><span class="danger-level extreme">極危險</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Swim → T1</strong></td>
+                        <td>117.8名</td>
+                        <td>480名</td>
+                        <td>229人</td>
+                        <td><span class="danger-level extreme">極危險</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><strong>Bike → T2</strong></td>
+                        <td>110.3名</td>
+                        <td>496名</td>
+                        <td>237人</td>
+                        <td><span class="danger-level extreme">極危險</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>T1 → Bike 20k</strong></td>
+                        <td>102.8名</td>
+                        <td>457名</td>
+                        <td>217人</td>
+                        <td><span class="danger-level extreme">極危險</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Run 3k → Run 7.5k</td>
+                        <td>39.9名</td>
+                        <td>372名</td>
+                        <td>158人</td>
+                        <td><span class="danger-level high">高危險</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>🏆 按水準級別分析</h2>
+            <div class="level-cards">
+                <div class="level-card elite">
+                    <div class="level-header elite">
+                        <h3>🥇 菁英級別 (前50名)</h3>
+                        <p>技術穩定，轉換區是弱點</p>
+                    </div>
+                    <div class="level-content">
+                        <h4>TOP 5 Critical 分段:</h4>
+                        <div class="critical-rank">
+                            <span class="rank-number">1</span>
+                            <span class="segment-name">Swim → T1</span>
+                            <span class="change-value">96.4名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">2</span>
+                            <span class="segment-name">Bike → T2</span>
+                            <span class="change-value">91.8名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">3</span>
+                            <span class="segment-name">T2 → Run 3k</span>
+                            <span class="change-value">87.6名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">4</span>
+                            <span class="segment-name">T1 → Bike 20k</span>
+                            <span class="change-value">83.7名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">5</span>
+                            <span class="segment-name">Swim 0.95k → 1.9k</span>
+                            <span class="change-value">21.2名</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">中位數:</span>
-                    <span class="stat-value">02:42/100m</span>
+
+                <div class="level-card excellent">
+                    <div class="level-header excellent">
+                        <h3>🥈 優秀級別 (51-200名)</h3>
+                        <p>競爭最激烈，變動最大</p>
+                    </div>
+                    <div class="level-content">
+                        <h4>TOP 5 Critical 分段:</h4>
+                        <div class="critical-rank">
+                            <span class="rank-number">1</span>
+                            <span class="segment-name">T2 → Run 3k</span>
+                            <span class="change-value">134.9名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">2</span>
+                            <span class="segment-name">Swim → T1</span>
+                            <span class="change-value">115.5名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">3</span>
+                            <span class="segment-name">Bike → T2</span>
+                            <span class="change-value">113.3名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">4</span>
+                            <span class="segment-name">T1 → Bike 20k</span>
+                            <span class="change-value">105.4名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">5</span>
+                            <span class="segment-name">Run 3k → 7.5k</span>
+                            <span class="change-value">40.5名</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">最佳配速:</span>
-                    <span class="stat-value">01:45/100m <span class="performance-level elite">菁英</span></span>
+
+                <div class="level-card main">
+                    <div class="level-header main">
+                        <h3>🥉 主要族群 (201名+)</h3>
+                        <p>基礎技能需加強</p>
+                    </div>
+                    <div class="level-content">
+                        <h4>TOP 5 Critical 分段:</h4>
+                        <div class="critical-rank">
+                            <span class="rank-number">1</span>
+                            <span class="segment-name">T2 → Run 3k</span>
+                            <span class="change-value">132.9名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">2</span>
+                            <span class="segment-name">Swim → T1</span>
+                            <span class="change-value">122.1名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">3</span>
+                            <span class="segment-name">Bike → T2</span>
+                            <span class="change-value">111.8名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">4</span>
+                            <span class="segment-name">T1 → Bike 20k</span>
+                            <span class="change-value">104.5名</span>
+                        </div>
+                        <div class="critical-rank">
+                            <span class="rank-number">5</span>
+                            <span class="segment-name">Run 3k → 7.5k</span>
+                            <span class="change-value">43.6名</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">最慢配速:</span>
-                    <span class="stat-value">05:12/100m</span>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <h3>Critical 分段排名變動</h3>
+                    <canvas id="criticalChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>三組級別最危險分段比較</h3>
+                    <canvas id="levelComparisonChart" width="400" height="300"></canvas>
                 </div>
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>配速範圍 (每100m)</th>
-                    <th>人數</th>
-                    <th>百分比</th>
-                    <th>水準</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1:30-2:00</td>
-                    <td>10</td>
-                    <td>3.1%</td>
-                    <td><span class="performance-level elite">菁英級</span></td>
-                </tr>
-                <tr>
-                    <td>2:00-2:30</td>
-                    <td>71</td>
-                    <td>21.8%</td>
-                    <td><span class="performance-level excellent">優秀</span></td>
-                </tr>
-                <tr style="background-color: #e8f5e8;">
-                    <td><strong>2:30-3:00</strong></td>
-                    <td><strong>133</strong></td>
-                    <td><strong>40.8%</strong></td>
-                    <td><span class="performance-level good">主要族群</span></td>
-                </tr>
-                <tr>
-                    <td>>3:00</td>
-                    <td>93</td>
-                    <td>28.5%</td>
-                    <td><span class="performance-level needs-improvement">需要改善</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- 性別比較 Tab -->
+        <div id="comparison" class="tab-content">
+            <div class="summary-box">
+                <h3>🚺 vs 🚹 性別差異比較</h3>
+                <p><strong>參賽人數:</strong> 女性40人 vs 男性326人 (女性僅佔11%)</p>
+                <p><strong>跑步配速:</strong> 女性7'48"/km vs 男性8'04"/km (女性較快！)</p>
+            </div>
 
-        <h2>🚴‍♂️ 騎車速度分析 (公里/小時)</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>速度統計</h3>
-                <div class="stat-row">
-                    <span class="stat-label">平均速度:</span>
-                    <span class="stat-value">26.6 km/hr</span>
+            <h2>📊 性別表現比較表</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>項目</th>
+                        <th>男性 (326人)</th>
+                        <th>女性 (40人)</th>
+                        <th>差異</th>
+                        <th>優勢</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>游泳配速</strong></td>
+                        <td>02:47/100m</td>
+                        <td>02:54/100m</td>
+                        <td>慢7秒</td>
+                        <td>男性</td>
+                    </tr>
+                    <tr>
+                        <td><strong>騎車速度</strong></td>
+                        <td>26.6 km/hr</td>
+                        <td>24.9 km/hr</td>
+                        <td>慢1.7 km/hr</td>
+                        <td>男性</td>
+                    </tr>
+                    <tr style="background-color: #e8f5e8;">
+                        <td><strong>跑步配速</strong></td>
+                        <td>8'04"/km</td>
+                        <td>7'48"/km</td>
+                        <td><strong>快16秒</strong></td>
+                        <td><strong>女性</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>參與率</strong></td>
+                        <td>89%</td>
+                        <td>11%</td>
+                        <td>-</td>
+                        <td>需提升</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <h3>男女性表現雷達圖</h3>
+                    <canvas id="genderComparisonChart" width="400" height="300"></canvas>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">中位數:</span>
-                    <span class="stat-value">26.4 km/hr</span>
+                <div class="chart-box">
+                    <h3>性別參與度分布</h3>
+                    <canvas id="genderParticipationChart" width="400" height="300"></canvas>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">最快速度:</span>
-                    <span class="stat-value">40.8 km/hr <span class="performance-level elite">頂尖</span></span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">最慢速度:</span>
-                    <span class="stat-value">20.7 km/hr</span>
-                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>🏆 女性選手特色</h4>
+                <p><strong>耐力優勢:</strong> 跑步項目表現優於同年齡男性，展現女性在超長距離的耐力優勢</p>
+                <p><strong>改善空間:</strong> 騎車項目有很大提升潛力，可能成為成績突破的關鍵</p>
+                <p><strong>參與度:</strong> 女性參與鐵人三項的比例仍偏低，有很大成長空間</p>
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>速度範圍 (km/hr)</th>
-                    <th>人數</th>
-                    <th>百分比</th>
-                    <th>水準</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><25</td>
-                    <td>94</td>
-                    <td>28.8%</td>
-                    <td><span class="performance-level needs-improvement">需要改善</span></td>
-                </tr>
-                <tr style="background-color: #e8f5e8;">
-                    <td><strong>25-30</strong></td>
-                    <td><strong>159</strong></td>
-                    <td><strong>48.8%</strong></td>
-                    <td><span class="performance-level good">主要族群</span></td>
-                </tr>
-                <tr>
-                    <td>30-35</td>
-                    <td>36</td>
-                    <td>11.0%</td>
-                    <td><span class="performance-level excellent">優秀</span></td>
-                </tr>
-                <tr>
-                    <td>35-40</td>
-                    <td>2</td>
-                    <td>0.6%</td>
-                    <td><span class="performance-level elite">菁英級</span></td>
-                </tr>
-                <tr>
-                    <td>>40</td>
-                    <td>1</td>
-                    <td>0.3%</td>
-                    <td><span class="performance-level elite">頂尖</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- 洞察建議 Tab -->
+        <div id="insights" class="tab-content">
+            <h2>💡 關鍵洞察與建議</h2>
 
-        <h2>🏃‍♂️ 跑步配速分析 (每公里)</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>配速統計</h3>
-                <div class="stat-row">
-                    <span class="stat-label">平均配速:</span>
-                    <span class="stat-value">8'04"/km</span>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>🏊‍♂️ 游泳項目洞察</h4>
+                    <p><strong>現狀:</strong> 大多數選手(40.8%)配速在2:30-3:00/100m，屬於業餘水準</p>
+                    <p><strong>建議:</strong> 加強游泳技術訓練，提升水感和划水效率</p>
+                    <p><strong>Critical點:</strong> Swim → T1 是第二危險的轉換</p>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">中位數:</span>
-                    <span class="stat-value">8'09"/km</span>
+                <div class="stat-card">
+                    <h4>🚴‍♂️ 騎車項目洞察</h4>
+                    <p><strong>現狀:</strong> 近半數(48.8%)維持25-30km/hr，是相對穩定的項目</p>
+                    <p><strong>建議:</strong> 提升功率輸出，加強爬坡和抗風能力訓練</p>
+                    <p><strong>Critical點:</strong> Bike → T2 和 T1 → Bike 20k 都很危險</p>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">最佳配速:</span>
-                    <span class="stat-value">5'34"/km <span class="performance-level elite">菁英</span></span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">最慢配速:</span>
-                    <span class="stat-value">10'34"/km</span>
+                <div class="stat-card">
+                    <h4>🏃‍♂️ 跑步項目洞察</h4>
+                    <p><strong>現狀:</strong> 配速偏慢，46.6%選手超過8'00"/km，顯示長距離後體力下降明顯</p>
+                    <p><strong>建議:</strong> 加強耐力基礎，練習磚式訓練(騎車後跑步)</p>
+                    <p><strong>Critical點:</strong> T2 → Run 3k 是最危險的轉換！</p>
                 </div>
             </div>
-        </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>配速範圍 (每公里)</th>
-                    <th>人數</th>
-                    <th>百分比</th>
-                    <th>水準</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>5'00"-6'00"</td>
-                    <td>8</td>
-                    <td>2.5%</td>
-                    <td><span class="performance-level elite">菁英級</span></td>
-                </tr>
-                <tr>
-                    <td>6'00"-7'00"</td>
-                    <td>49</td>
-                    <td>15.0%</td>
-                    <td><span class="performance-level excellent">優秀</span></td>
-                </tr>
-                <tr>
-                    <td>7'00"-8'00"</td>
-                    <td>72</td>
-                    <td>22.1%</td>
-                    <td><span class="performance-level good">良好</span></td>
-                </tr>
-                <tr style="background-color: #ffeaa7;">
-                    <td><strong>>8'00"</strong></td>
-                    <td><strong>152</strong></td>
-                    <td><strong>46.6%</strong></td>
-                    <td><span class="performance-level needs-improvement">主要族群</span></td>
-                </tr>
-            </tbody>
-        </table>
+            <h2>🎯 針對性訓練建議</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>🥇 菁英級別訓練重點</h4>
+                    <p><strong>重點:</strong> 游泳定位策略、轉換區效率</p>
+                    <p><strong>練習:</strong> T1快速換裝、游泳戰術位置</p>
+                    <p><strong>目標:</strong> 減少轉換區失誤，保持領先優勢</p>
+                </div>
+                <div class="stat-card">
+                    <h4>🥈 優秀級別訓練重點</h4>
+                    <p><strong>重點:</strong> T2→跑步轉換、配速控制</p>
+                    <p><strong>練習:</strong> 磚式訓練、轉換區速度</p>
+                    <p><strong>目標:</strong> 穩定發揮，避免大幅排名下滑</p>
+                </div>
+                <div class="stat-card">
+                    <h4>🥉 主要族群訓練重點</h4>
+                    <p><strong>重點:</strong> 基礎轉換技巧、體力分配</p>
+                    <p><strong>練習:</strong> 轉換區流程、騎跑轉換適應</p>
+                    <p><strong>目標:</strong> 提升基礎技能，減少技術失誤</p>
+                </div>
+            </div>
 
-        <h2>📊 表現分布圖表</h2>
-        <div class="chart-grid">
-            <div class="chart-box">
-                <h3>游泳配速分布</h3>
-                <canvas id="swimChart" width="400" height="300"></canvas>
+            <div class="warning-box">
+                <h3>🔥 最重要的發現</h3>
+                <p><strong>轉換區技巧對所有級別都很重要！</strong></p>
+                <p>• T2 → Run 3k 是普遍的終極考驗，平均變動超過100名</p>
+                <p>• 技術穩定度比純粹體能更能決定最終排名</p>
+                <p>• 女性在跑步耐力上有天然優勢，值得發揮</p>
+                <p>• 訓練重點: 轉換區 > 跑步 > 游泳 > 騎車</p>
             </div>
-            <div class="chart-box">
-                <h3>騎車速度分布</h3>
-                <canvas id="bikeChart" width="400" height="300"></canvas>
-            </div>
-        </div>
-        <div class="chart-grid">
-            <div class="chart-box">
-                <h3>跑步配速分布</h3>
-                <canvas id="runChart" width="400" height="300"></canvas>
-            </div>
-            <div class="chart-box">
-                <h3>三項目表現綜合比較</h3>
-                <canvas id="overallChart" width="400" height="300"></canvas>
-            </div>
-        </div>
 
-        <h2>💡 關鍵洞察與建議</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>🏊‍♂️ 游泳分析</h3>
-                <p>大多數選手(40.8%)配速在2:30-3:00/100m，屬於業餘水準。僅3.1%達到菁英級配速。</p>
-                <p><strong>建議:</strong> 加強游泳技術訓練，提升水感和划水效率。</p>
-            </div>
-            <div class="stat-card">
-                <h3>🚴‍♂️ 騎車分析</h3>
-                <p>近半數(48.8%)維持25-30km/hr，是相對穩定的項目。速度分布較為集中。</p>
-                <p><strong>建議:</strong> 提升功率輸出，加強爬坡和抗風能力訓練。</p>
-            </div>
-            <div class="stat-card">
-                <h3>🏃‍♂️ 跑步分析</h3>
-                <p>配速偏慢，46.6%選手超過8:00/km，顯示長距離後體力下降明顯。</p>
-                <p><strong>建議:</strong> 加強耐力基礎，練習磚式訓練(騎車後跑步)。</p>
-            </div>
-            <div class="stat-card">
-                <h3>🎯 整體建議</h3>
-                <p>跑步項目有最大提升空間，建議重點強化跑步耐力。騎車表現相對穩定，可作為強項保持。</p>
-                <p><strong>訓練重點:</strong> 跑步 > 游泳 > 騎車</p>
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <h3>訓練重點優先級</h3>
+                    <canvas id="trainingPriorityChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>改善潛力分析</h3>
+                    <canvas id="improvementPotentialChart" width="400" height="300"></canvas>
+                </div>
             </div>
         </div>
 
         <div style="text-align: center; margin-top: 40px; color: #7f8c8d; font-size: 14px;">
-            <p>數據來源: Challenge Taiwan 2025 - 226km Individual Results</p>
-            <p>分析時間: 2025年9月 | 樣本數: 326位男性選手 (40-49歲)</p>
+            <p>數據來源: Challenge Taiwan 2025 - 226km Individual Results & Splits Data</p>
+            <p>分析時間: 2025年9月 | 樣本數: 776位選手，19,758筆分段記錄</p>
         </div>
     </div>
 
     <script>
+        // Tab functionality
+        function showTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("nav-tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
         // 游泳配速分布圖
         const swimCtx = document.getElementById('swimChart').getContext('2d');
         new Chart(swimCtx, {
@@ -446,15 +822,6 @@
                 plugins: {
                     legend: {
                         position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((context.parsed * 100) / total).toFixed(1);
-                                return `${context.label}: ${context.parsed}人 (${percentage}%)`;
-                            }
-                        }
                     }
                 }
             }
@@ -470,27 +837,11 @@
                     label: '人數',
                     data: [94, 159, 36, 2, 1],
                     backgroundColor: ['#e74c3c', '#3498db', '#27ae60', '#f1c40f', '#9b59b6'],
-                    borderColor: ['#c0392b', '#2980b9', '#229954', '#f39c12', '#8e44ad'],
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: '人數'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: '速度範圍 (km/hr)'
-                        }
-                    }
-                },
                 plugins: {
                     legend: {
                         display: false
@@ -517,15 +868,6 @@
                 plugins: {
                     legend: {
                         position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((context.parsed * 100) / total).toFixed(1);
-                                return `${context.label}: ${context.parsed}人 (${percentage}%)`;
-                            }
-                        }
                     }
                 }
             }
@@ -542,25 +884,175 @@
                     data: [3.1, 21.8, 11.6, 0.9, 17.5, 2.5],
                     backgroundColor: 'rgba(52, 152, 219, 0.2)',
                     borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Critical 分段圖
+        const criticalCtx = document.getElementById('criticalChart').getContext('2d');
+        new Chart(criticalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['T2→Run3k', 'Swim→T1', 'Bike→T2', 'T1→Bike20k', 'Run3k→7.5k'],
+                datasets: [{
+                    label: '平均排名變動',
+                    data: [129.2, 117.8, 110.3, 102.8, 39.9],
+                    backgroundColor: ['#e74c3c', '#e74c3c', '#e74c3c', '#e74c3c', '#f39c12'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 級別比較圖
+        const levelComparisonCtx = document.getElementById('levelComparisonChart').getContext('2d');
+        new Chart(levelComparisonCtx, {
+            type: 'radar',
+            data: {
+                labels: ['T2→Run3k', 'Swim→T1', 'Bike→T2', 'T1→Bike20k'],
+                datasets: [{
+                    label: '菁英級別',
+                    data: [87.6, 96.4, 91.8, 83.7],
+                    backgroundColor: 'rgba(241, 196, 15, 0.2)',
+                    borderColor: 'rgba(241, 196, 15, 1)',
+                    borderWidth: 2
+                }, {
+                    label: '優秀級別',
+                    data: [134.9, 115.5, 113.3, 105.4],
+                    backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                    borderColor: 'rgba(39, 174, 96, 1)',
+                    borderWidth: 2
+                }, {
+                    label: '主要族群',
+                    data: [132.9, 122.1, 111.8, 104.5],
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // 性別比較圖
+        const genderComparisonCtx = document.getElementById('genderComparisonChart').getContext('2d');
+        new Chart(genderComparisonCtx, {
+            type: 'radar',
+            data: {
+                labels: ['游泳配速', '騎車速度', '跑步配速', '參與人數'],
+                datasets: [{
+                    label: '女性表現',
+                    data: [85, 75, 95, 11],
+                    backgroundColor: 'rgba(233, 30, 99, 0.2)',
+                    borderColor: 'rgba(233, 30, 99, 1)',
+                    borderWidth: 2
+                }, {
+                    label: '男性表現',
+                    data: [90, 85, 85, 89],
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // 性別參與度圖
+        const genderParticipationCtx = document.getElementById('genderParticipationChart').getContext('2d');
+        new Chart(genderParticipationCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['男性', '女性'],
+                datasets: [{
+                    data: [326, 40],
+                    backgroundColor: ['#3498db', '#e91e63'],
                     borderWidth: 2,
-                    pointBackgroundColor: 'rgba(52, 152, 219, 1)',
-                    pointRadius: 5
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 訓練優先級圖
+        const trainingPriorityCtx = document.getElementById('trainingPriorityChart').getContext('2d');
+        new Chart(trainingPriorityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['轉換區技巧', '跑步耐力', '游泳技術', '騎車功率'],
+                datasets: [{
+                    label: '重要性得分',
+                    data: [95, 85, 70, 65],
+                    backgroundColor: ['#e74c3c', '#f39c12', '#3498db', '#27ae60'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 改善潛力圖
+        const improvementPotentialCtx = document.getElementById('improvementPotentialChart').getContext('2d');
+        new Chart(improvementPotentialCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: '改善潛力 vs 難度',
+                    data: [
+                        {x: 30, y: 90, label: '轉換區'},
+                        {x: 60, y: 80, label: '跑步'},
+                        {x: 70, y: 70, label: '游泳'},
+                        {x: 80, y: 50, label: '騎車'}
+                    ],
+                    backgroundColor: ['#e74c3c', '#f39c12', '#3498db', '#27ae60'],
+                    pointRadius: 8
                 }]
             },
             options: {
                 responsive: true,
                 scales: {
-                    r: {
-                        beginAtZero: true,
-                        max: 25,
-                        ticks: {
-                            stepSize: 5
+                    x: {
+                        title: {
+                            display: true,
+                            text: '訓練難度'
                         }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '改善潛力'
+                        }
                     }
                 }
             }
